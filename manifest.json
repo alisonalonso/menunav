@@ -1,0 +1,22 @@
+{
+  "name": "Menu Nav Extension",
+  "version": "0.1",
+  "manifest_version": 2,
+  "description": "Create a menu for web page.",
+  "icons": { "128": "images/menu128.png", "48": "images/menu48.png" },
+  "background": { "scripts": ["background.js"] },
+  "content_scripts": [
+    { "matches": ["*://*/*"], "js": ["menunav.js"] }
+  ],
+  "page_action": {
+    "default_icon": {
+      "19": "images/menu19.png",
+      "38": "images/menu38.png"
+    },
+    "default_title": "MenuNav",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "tabs"
+  ]
+}
