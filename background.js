@@ -7,21 +7,18 @@ var selectedId = null;
 function updateMenu(tabId) {
     chrome.tabs.sendMessage(tabId, {}, function(menu) {
         menus[tabId] = menu;
-        if (!menu) {
-            chrome.pageAction.hide(tabId);
-        } else {
-            chrome.pageAction.show(tabId);
-            if (selectedId == tabId) {
-                updateSelected(tabId);
-            }
-        }
+        updateSelected(tabId);
     });
 }
 
 function updateSelected(tabId) {
     selectedMenu = menus[tabId];
-    if (selectedMenu)
-        chrome.pageAction.setTitle({tabId:tabId, title:"Tab " + tabId.toString()});
+    if (selectedMenu) {
+        chrome.pageAction.show(tabId);
+        chrome.pageAction.setTitle({tabId:tabId, title:"Menu for " + tabId.toString()});
+    } else {
+        chrome.pageAction.hide(tabId);
+    }
 }
 
 //noinspection JSUnusedLocalSymbols
@@ -34,6 +31,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
 //noinspection JSUnusedLocalSymbols
 chrome.tabs.onActivated.addListener(function(tab, info) {
     selectedId = tab.tabId;
+    updateMenu(tab.tabId);
     updateSelected(tab.tabId);
 });
 
